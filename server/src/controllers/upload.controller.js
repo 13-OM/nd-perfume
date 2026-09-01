@@ -1,18 +1,33 @@
-const path = require('path');
-const fs = require('fs');
-const asyncHandler = require('../utils/asyncHandler');
+const cloudinary = require('../config/cloudinary');
 const ApiError = require('../utils/ApiError');
+const asyncHandler = require('../utils/asyncHandler');
 
-/** POST /api/upload — single image (multer middleware applied in route) */
 exports.uploadSingle = asyncHandler(async (req, res) => {
-  if (!req.file) throw new ApiError(400, 'No file uploaded');
-  res.json({ success: true, url: `/uploads/${req.file.filename}` });
-});
+  if (!req.file) {
+    throw new ApiError(400, 'No file uploaded');
+  }
 
-/** DELETE /api/upload/:filename — remove an uploaded file */
-exports.deleteFile = asyncHandler(async (req, res) => {
-  const safe = path.basename(req.params.filename);
-  const full = path.join(__dirname, '..', '..', 'uploads', safe);
-  if (fs.existsSync(full)) fs.unlinkSync(full);
-  res.json({ success: true, message: 'File removed' });
+  const result = await new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder: 'nd-perfume/products',
+        resource_type: 'image',
+      },
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+
+    stream.end(req.file.buffer);
+  });
+
+  res.json({
+    success: true,
+    url: result.secure_url,
+    publicId: result.public_id,
+  });
 });
