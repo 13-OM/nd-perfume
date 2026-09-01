@@ -221,3 +221,4 @@ VITE_API_URL      # optional; defaults to '/api' (proxied by Vite in dev)
 ---
 
 © 2026 ND Perfume · Marketed by ND Lifestyle Pvt. Ltd. — prototype build.
+"# nd-perfume" 
