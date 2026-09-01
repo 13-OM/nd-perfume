@@ -31,3 +31,23 @@ exports.uploadSingle = asyncHandler(async (req, res) => {
     publicId: result.public_id,
   });
 });
+
+
+exports.deleteFile = asyncHandler(async (req, res) => {
+  const publicId = req.params.filename;
+
+  if (!publicId) {
+    throw new ApiError(400, 'Cloudinary public ID is required');
+  }
+
+  const result = await cloudinary.uploader.destroy(publicId, {
+    resource_type: 'image',
+    invalidate: true,
+  });
+
+  res.json({
+    success: true,
+    message: 'Image removed from Cloudinary',
+    result,
+  });
+});
