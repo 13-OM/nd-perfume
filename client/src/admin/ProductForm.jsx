@@ -168,7 +168,7 @@ export default function ProductForm() {
   );
 }
 
-function ImageField({ label, value, uploading, onUpload, onClear }) {
+function ImageField({ label, field, value, uploading, onUpload, onClear }) {
   return (
     <div className="img-field">
       <span className="img-field-label">{label}</span>
@@ -182,7 +182,7 @@ function ImageField({ label, value, uploading, onUpload, onClear }) {
           <label className="img-upload">
             <UploadCloud size={22} />
             <span>{uploading ? 'Uploading…' : 'Click to upload'}</span>
-            <input type="file" accept="image/*" hidden onChange={(e) => onUpload(e, 'image')} />
+            <input type="file" accept="image/*" hidden onChange={(e) => onUpload(e, field)} />
           </label>
         )}
       </div>
