@@ -13,6 +13,7 @@ const user = require('../controllers/user.controller');
 const admin = require('../controllers/admin.controller');
 const content = require('../controllers/content.controller');
 const uploadCtrl = require('../controllers/upload.controller');
+const paymentController = require('../controllers/payment.controller');
 
 /* Health */
 router.get('/health', (req, res) => res.json({ success: true, service: 'ND Perfume API', time: new Date() }));
@@ -52,6 +53,10 @@ router.delete('/wishlist/:productId', wishlist.remove);
 
 /* Coupons */
 router.post('/coupons/validate', coupon.validate);
+
+/* pay */
+router.post('/payments/create-order', paymentController.createPaymentOrder);
+router.post('/payments/verify', paymentController.verifyPayment);
 
 /* Reviews */
 router.get('/reviews/product/:productId', review.listByProduct);

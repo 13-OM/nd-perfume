@@ -41,11 +41,32 @@ const orderSchema = new mongoose.Schema(
     shipping: Number,
     total: Number,
 
-    paymentMethod: { type: String, enum: ['online', 'cod'], default: 'online' },
+    paymentMethod: {
+      type: String,
+      enum: ['online', 'cod'],
+      default: 'online',
+    },
+
     paymentStatus: {
       type: String,
       enum: ['pending', 'paid', 'failed', 'refunded'],
       default: 'pending',
+    },
+
+    // Razorpay payment information
+    razorpayOrderId: {
+      type: String,
+      default: '',
+    },
+
+    razorpayPaymentId: {
+      type: String,
+      default: '',
+    },
+
+    razorpaySignature: {
+      type: String,
+      default: '',
     },
 
     status: {
@@ -65,7 +86,7 @@ const orderSchema = new mongoose.Schema(
     address: addressSnapshot,
 
     tracking: {
-      provider: { type: String, default: '' }, // future: Delhivery / Shiprocket
+      provider: { type: String, default: '' },
       trackingId: { type: String, default: '' },
       timeline: [
         {
